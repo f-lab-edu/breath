@@ -1,29 +1,19 @@
 package kr.co.changh0.breath.dto;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import kr.co.changh0.breath.common.boolType;
-import lombok.Builder;
+import kr.co.changh0.breath.common.enums.boolType;
 import lombok.Getter;
 import lombok.Setter;
-import org.mapstruct.MapMapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.TargetType;
-import org.mapstruct.control.MappingControl;
+import lombok.ToString;
 
-import java.sql.Blob;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class PostDto {
     public PostDto() {}
 
-    private Integer id;
+    private Integer postSeq;
 
-    private Integer parentId;
+    private Integer parentPostId;
 
     private Integer userSeq;
 
@@ -31,40 +21,38 @@ public class PostDto {
 
     private String title;
 
-    private Blob contents;
+    private String contents;
 
     private Integer targetAmount;
 
-    private LocalDate donationStartDt;
+    private String donationStartDt;
 
-    private LocalDate donationEndDt;
+    private String donationEndDt;
 
     private Integer reviewerSeq;
 
-    private LocalDateTime reviewDt;
+    private String reviewDt;
 
-    private LocalDateTime createDt;
+    private String createDt;
 
-    private LocalDateTime updateDt;
+    private String updateDt;
 
-    @Enumerated(EnumType.STRING)
     private boolType mainYn = boolType.N;
 
-    @Enumerated(EnumType.STRING)
     private boolType adultYn = boolType.N;
 
-    @Enumerated(EnumType.STRING)
     private boolType secretYn = boolType.N;
 
-    @Enumerated(EnumType.STRING)
     private boolType deleteYn = boolType.N;
 
     private String qnaTypeId;
 
     private String categoryId;
 
+    private String downCategoryId;
+
     private String statusId;
 
-    private String typeId;
+    private String postTypeId;
 
 }

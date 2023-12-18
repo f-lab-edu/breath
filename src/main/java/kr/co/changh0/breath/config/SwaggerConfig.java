@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(title = "My Restful Service API 명세서",
-                description = "Spring Bootf로 개발하는 Restful API 명세서 입니다.",
+                description = "Spring Boot로 개발하는 Restful API 명세서 입니다.",
                 version = "v1.0.0")
 
 )

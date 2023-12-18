@@ -1,31 +1,26 @@
 package kr.co.changh0.breath.mapper;
 
 import kr.co.changh0.breath.dto.UserDto;
-import kr.co.changh0.breath.entity.User;
-import kr.co.changh0.breath.entity.UserLogin;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+
+@Repository
 public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "userLogin.userId", target = "userId")
-    @Mapping(source = "userLogin.password", target = "password")
-    @Mapping(source = "user.userSeq", target = "id")
-    @Mapping(source = "user.createDt", target = "createDt")
-    @Mapping(source = "user.updateDt", target = "updateDt")
-    UserDto userAndLoginToUserDto(User user, UserLogin userLogin);
+    List<UserDto> selectAllUser();
 
-    UserDto userToUserDto(User user);
-    List<UserDto> listUserToUserDto(List<User> user);
-    User userDtoToUser(UserDto userDto);
+    UserDto selectUserId(String userId);
 
-    @Mapping(source = "user.userSeq", target = "user.userSeq")
-    @Mapping(source = "user.createDt", target = "createDt")
-    @Mapping(source = "user.updateDt", target = "updateDt")
-    UserLogin userDtoToUserLogin(UserDto userDto, User user);
+    void insertUser(UserDto userDto);
+
+    void insertUserLogin(UserDto userDto);
+
+    UserDto deleteUser(int userSeq);
+
+    void insertUserHistory(int userSeq);
+
+    UserDto duplicateCheck(@Param("type") String type, @Param("value") String value);
 }

@@ -1,15 +1,9 @@
 package kr.co.changh0.breath.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import kr.co.changh0.breath.common.boolType;
-import kr.co.changh0.breath.common.genderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -51,9 +45,6 @@ public class User {
     private String introduction;
 
     private String authority;
-
-    @Column(name = "master_status")
-    private String masterStatus;
 
     @Column(name = "create_dt")
     @CreationTimestamp

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.changh0.breath.mapper.PostMapper">
+    <resultMap id="posts" type="kr.co.changh0.breath.dto.PostDto">
+        <result property="postSeq" column="post_seq"/>
+        <result property="parentPostId" column="parent_post_seq"/>
+        <result property="userSeq" column="user_seq"/>
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="targetAmount" column="target_amount"/>
+        <result property="donationStartDt" column="donation_start_dt"/>
+        <result property="donationEndDt" column="donation_end_dt"/>
+        <result property="reviewerSeq" column="reviewer_seq"/>
+        <result property="reviewDt" column="review_dt"/>
+        <result property="qnaTypeId" column="qna_type_id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="downCategoryId" column="down_category_id"/>
+        <result property="statusId" column="status_id"/>
+        <result property="postTypeId" column="post_type_id"/>
+    </resultMap>
+
+    <insert id="insertPost">
+        INSERT INTO POST (
+            PARENT_POST_SEQ,
+            USER_SEQ,
+            TITLE,
+            CONTENTS,
+            TARGET_AMOUNT,
+            DONATION_START_DT,
+            DONATION_END_DT,
+            REVIEW_DT,
+            CREATE_DT,
+            UPDATE_DT,
+            MAIN_YN,
+            ADULT_YN,
+            SECRET_YN,
+            DELETE_YN,
+            QNA_TYPE_ID,
+            CATEGORY_ID,
+            DOWN_CATEGORY_ID,
+            STATUS_ID,
+            POST_TYPE_ID
+        ) VALUES (
+            #{parentPostId},
+            #{userSeq},
+            #{title},
+            #{contents},
+            #{targetAmount},
+            #{donationStartDt},
+            #{donationEndDt},
+            #{reviewDt},
+            SYSDATE(),
+            SYSDATE(),
+            #{mainYn},
+            #{adultYn},
+            #{secretYn},
+            #{deleteYn},
+            #{qnaTypeId},
+            #{categoryId},
+            #{downCategoryId},
+            #{statusId},
+            #{postTypeId}
+        )
+    </insert>
+
+    <select id="selectPosts" resultMap="posts">
+        SELECT  POST_SEQ,
+            PARENT_POST_SEQ,
+            USER_SEQ,
+            TITLE,
+            CONTENTS,
+            TARGET_AMOUNT,
+            DONATION_START_DT,
+            DONATION_END_DT,
+            REVIEWER_SEQ,
+            REVIEW_DT,
+            QNA_TYPE_ID,
+            CATEGORY_ID,
+            DOWN_CATEGORY_ID,
+            STATUS_ID,
+            POST_TYPE_ID
+        FROM    POST
+        WHERE   POST_TYPE_ID = #{type}
+        <if test='type eq  "001".toString()'>
+            AND STATUS_ID = '002'
+        </if>
+            AND DELETE_YN = 'N'
+    </select>
+
+    <select id="selectUserPosts" resultMap="posts">
+        SELECT  *
+        FROM    POST
+        WHERE   USER_SEQ = #{userSeq}
+            AND DELETE_YN = 'N'
+    </select>
+</mapper>

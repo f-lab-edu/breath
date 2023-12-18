@@ -16,6 +16,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
 }
 
 repositories {
@@ -31,6 +36,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -39,11 +48,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 }
 
 tasks.named('test') {

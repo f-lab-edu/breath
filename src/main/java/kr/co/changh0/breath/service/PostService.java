@@ -1,21 +1,28 @@
 package kr.co.changh0.breath.service;
 
 import kr.co.changh0.breath.dto.PostDto;
-import kr.co.changh0.breath.entity.Post;
 import kr.co.changh0.breath.mapper.PostMapper;
-import kr.co.changh0.breath.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
+    private final PostMapper postMapper;
     public void save(PostDto postDto) {
 
-        Post post = PostMapper.INSTANCE.postDtoToPost(postDto);
-        postRepository.save(post);
+        postMapper.insertPost(postDto);
 
+    }
+
+    public List<PostDto> selectPosts(String type) {
+        return postMapper.selectPosts(type);
+    }
+
+    public List<PostDto> selectUserPosts(int seq) {
+        return postMapper.selectUserPosts(seq);
     }
 }

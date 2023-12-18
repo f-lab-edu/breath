@@ -4,35 +4,32 @@ import jakarta.validation.Valid;
 import kr.co.changh0.breath.common.exception.UserNotFoundException;
 import kr.co.changh0.breath.dto.UserDto;
 import kr.co.changh0.breath.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
     private final UserService userservice;
 
-    public UserController(UserService service) {
-        this.userservice = service;
-    }
-
-    @GetMapping
+    @GetMapping // 단일 유저 조회로 변경 예정
     public List<UserDto> retrieveAllUsers() {
         return userservice.findAll();
     }
 
-    @GetMapping("/{id}")
-    public UserDto retrieveUser(@PathVariable final int id) {
-        UserDto userDto = userservice.findOne(id);
+    @GetMapping("/{seq}")
+    public UserDto retrieveUser(@PathVariable final int seq) {
+        UserDto userDto = userservice.findOne(seq);
 
         if(userDto == null) {
-            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+            throw new UserNotFoundException(String.format("ID[%s] not found", seq));
         }
 
         return userDto;
@@ -48,7 +45,7 @@ public class UserController {
 //                .toUri();
 
         //return ResponseEntity.created(location).build();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping("/duplicateCheck/{type}/{value}")
@@ -61,14 +58,18 @@ public class UserController {
         return ResponseEntity.ok().body(result);
 
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable final int id) {
-        UserDto deleteUser = userservice.deleteById(id);
+    @DeleteMapping("/{seq}")
+    public ResponseEntity deleteUser(@PathVariable final int seq) {
+        UserDto deleteUser = userservice.deleteUser(seq);
 
         if(deleteUser == null) {
-            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+            throw new UserNotFoundException(String.format("ID[%s] not found", seq));
         }
 
         return ResponseEntity.noContent().build();
     }
+
+    //@PutMapping("/{userSeq}")
+
+    //@GetMapping("/postList")
 }

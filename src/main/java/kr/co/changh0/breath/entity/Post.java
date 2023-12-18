@@ -35,8 +35,7 @@ public class Post {
 
     private String title;
 
-    @Lob
-    private Blob contents;
+    private String contents;
 
     private Integer targetAmount;
 
@@ -75,7 +74,7 @@ public class Post {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
-    private PostType type;
+    @JoinColumn(name = "post_type_id")
+    private PostType postType;
 
 }

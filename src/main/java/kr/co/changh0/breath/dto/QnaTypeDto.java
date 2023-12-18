@@ -16,8 +16,8 @@ public class QnaTypeDto {
 
     private String useYn;
 
-    private LocalDateTime createDt;
+    private String createDt;
 
-    private LocalDateTime updateDt;
+    private String updateDt;
 
 }

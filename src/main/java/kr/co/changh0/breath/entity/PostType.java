@@ -18,9 +18,9 @@ public class PostType {
     public PostType() {}
 
     @Id
-    private String typeId;
+    private String postTypeId;
 
-    private String type;
+    private String postType;
 
     private String useYn;
 

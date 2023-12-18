@@ -12,11 +12,13 @@ public class CategoryDto {
 
     private String categoryId;
 
+    private String downCategoryId;
+
     private String category;
 
     private String useYn;
 
-    private LocalDateTime createDt;
+    private String createDt;
 
-    private LocalDateTime updateDt;
+    private String updateDt;
 }

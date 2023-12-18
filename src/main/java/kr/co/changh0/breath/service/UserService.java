@@ -1,30 +1,25 @@
 package kr.co.changh0.breath.service;
 
 import kr.co.changh0.breath.dto.UserDto;
-import kr.co.changh0.breath.entity.User;
-import kr.co.changh0.breath.entity.UserLogin;
 import kr.co.changh0.breath.mapper.UserMapper;
-import kr.co.changh0.breath.repository.UserLoginRepository;
-import kr.co.changh0.breath.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserLoginRepository userLoginRepository;
+    private final UserMapper userMapper;
 
     public List<UserDto> findAll() {
-        List<UserDto> userDto = UserMapper.INSTANCE.listUserToUserDto(userRepository.findAll());
+        List<UserDto> userDto = userMapper.selectAllUser();
+
         return userDto;
     }
 
-    public UserDto save(final UserDto user) {
+    public UserDto save(UserDto user) {
         //같은 아이디, 이메일, 휴대전화, 닉네임 있는지 확인
         String userId = user.getUserId();
         String nickname = user.getNickname();
@@ -47,40 +42,32 @@ public class UserService {
             throw new RuntimeException("동일한 이메일이 존재합니다.");
         }
 
+        userMapper.insertUser(user);
+        userMapper.insertUserLogin(user);
 
-        User userInfo = userRepository.save(UserMapper.INSTANCE.userDtoToUser(user));
-
-        UserLogin userLogin = UserMapper.INSTANCE.userDtoToUserLogin(user, userInfo);
-
-        userLoginRepository.save(userLogin);
         //이메일 인증
 
         return user;
     }
 
     public boolean duplicateCheck(final String type, final String value) {
-        boolean result = true;
+        UserDto userDto;
 
-        UserLogin userLogin;
-        User user = null;
-
+        String checkType = null;
         if("id".equals(type)) {
-            userLogin = userLoginRepository.findByUserId(value);
-            if(userLogin != null) return true;
-        }
-        if("nickname".equals(type)) {
-            user = userRepository.findByNickname(value);
-        }
-        if("mobilePhone".equals(type)) {
-            user = userRepository.findByMobilePhone(value);
-        }
-        if("email".equals(type)) {
-            user = userRepository.findByEmail(value);
+            userDto = userMapper.selectUserId(value);
+        }else {
+            if("nickname".equals(type)) checkType = "NICKNAME";
+            if("mobilePhone".equals(type)) checkType = "MOBILE_PHONE";
+            if("email".equals(type)) checkType = "EMAIL";
+
+            userDto = userMapper.duplicateCheck(checkType, value);
         }
 
-        if(user == null) result = false;
+        Optional<UserDto> userDtoOptional = Optional.ofNullable(userDto);
+        if(userDtoOptional.isPresent()) return true;
 
-        return result;
+        return false;
     }
     public UserDto findOne(int id) {
 
@@ -88,8 +75,9 @@ public class UserService {
         return null;
     }
 
-    public UserDto deleteById(int id) {
+    public UserDto deleteUser(final int userSeq) {
+        userMapper.insertUserHistory(userSeq);
 
-        return null;
+        return userMapper.deleteUser(userSeq);
     }
 }

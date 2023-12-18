@@ -1,9 +1,8 @@
 package kr.co.changh0.breath.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import kr.co.changh0.breath.common.boolType;
-import kr.co.changh0.breath.common.genderType;
+import kr.co.changh0.breath.common.enums.boolType;
+import kr.co.changh0.breath.common.enums.genderType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ public class UserDto {
 
     public UserDto() {}
 
-    private Integer id;
+    private Integer userSeq;
 
     @NotBlank(message = "아이디는 필수값 입니다.")
     @Pattern(regexp = "^[a-z0-9_-]{6,20}$", message = "아이디는 6 ~ 20자의 영문 소문자, 숫자, 특수문자(-,_)만 사용할 수 있습니다.")
@@ -36,7 +35,6 @@ public class UserDto {
 
     private String mobilePhone;
 
-    @Enumerated(EnumType.STRING)
     private genderType gender;
 
     @Email(message = "이메일 형식에 맞지 않습니다.")
@@ -46,16 +44,12 @@ public class UserDto {
 
     private String introduction;
 
-    private char authority;
+    private String authority;
 
-    @Enumerated(EnumType.STRING)
-    private boolType masterStatus = boolType.N;
+    private String createDt;
 
-    private LocalDateTime createDt;
+    private String updateDt;
 
-    private LocalDateTime updateDt;
-
-    @Enumerated(EnumType.STRING)
     private boolType deleteYn = boolType.N;
 
 }
