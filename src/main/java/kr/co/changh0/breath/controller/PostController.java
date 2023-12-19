@@ -1,11 +1,14 @@
 package kr.co.changh0.breath.controller;
 
 import jakarta.validation.Valid;
+import kr.co.changh0.breath.common.enums.CategoryEnum;
 import kr.co.changh0.breath.common.enums.PostEnum;
+import kr.co.changh0.breath.common.enums.QnaEnum;
 import kr.co.changh0.breath.dto.PostDto;
 import kr.co.changh0.breath.entity.Post;
 import kr.co.changh0.breath.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,9 +34,9 @@ public class PostController {
 
     @GetMapping("/{type}")
     public List<PostDto> selectPosts(@PathVariable final String type) {
-        String postType = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
+        String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
 
-        return postService.selectPosts(postType);
+        return postService.selectPosts(postTypeId, null, null, null);
     }
 
     @PostMapping("/{type}")
@@ -56,8 +59,34 @@ public class PostController {
         return ResponseEntity.created(location).build();
     }
 
-    //@GetMapping("/{type}/{postId}")
+    @GetMapping("/{type}/{postId}")
+    public ResponseEntity<PostDto> selectPost(@PathVariable final String type, @PathVariable final int postId) {
+        PostDto postDto = new PostDto();
+        String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
 
+        postDto.setPostTypeId(postTypeId);
+        postDto = postService.selectPost(postId);
+
+        return ResponseEntity.ok(postDto);
+
+    }
+
+    @GetMapping("/{type}/search")
+    @ResponseBody
+    public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("type") final String PostType,
+                                                     @RequestParam final String searchVal,
+                                                     @RequestParam final String searchType,
+                                                     @RequestParam @DefaultValue("all") final String type) {
+        String postTypeId = PostEnum.valueOf(PostType.toUpperCase()).getPostTypeId();
+        String typeId = null;
+
+        if("001".equals(postTypeId)) typeId = CategoryEnum.valueOf(type.toUpperCase()).getCategoryId();
+        if("003".equals(postTypeId)) typeId = QnaEnum.valueOf(type.toUpperCase()).getQnaTypeId();
+
+        List<PostDto> posts = postService.selectPosts(postTypeId, searchVal, searchType, typeId);
+        System.out.println("end controller ::::");
+        return ResponseEntity.ok(posts);
+    }
     //@GetMapping("/{type}/{postId}/{parentPostId}") 필요 없을 수도?
 
     //@DeleteMapping("/{postId}")

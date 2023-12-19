@@ -50,6 +50,6 @@ public class UserDto {
 
     private String updateDt;
 
-    private boolType deleteYn = boolType.N;
+    private boolType deleteYn;
 
 }

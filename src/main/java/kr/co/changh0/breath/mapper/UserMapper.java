@@ -18,7 +18,7 @@ public interface UserMapper {
 
     void insertUserLogin(UserDto userDto);
 
-    UserDto deleteUser(int userSeq);
+    int deleteUser(int userSeq);
 
     void insertUserHistory(int userSeq);
 

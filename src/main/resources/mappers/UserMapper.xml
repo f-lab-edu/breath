@@ -6,6 +6,7 @@
     <resultMap id="test" type="kr.co.changh0.breath.dto.PostDto">
         <result property="postSeq" column="post_seq"/>
     </resultMap>
+
     <insert id="insertUser" useGeneratedKeys="true" parameterType="kr.co.changh0.breath.dto.UserDto" keyProperty="userSeq" keyColumn="user_seq">
         INSERT INTO USER (
             NICKNAME,
@@ -13,9 +14,7 @@
             BIRTHDAY,
             MOBILE_PHONE,
             GENDER,
-            EMAIL,
-            CREATE_DT,
-            UPDATE_DT
+            EMAIL
         )
         VALUES (
             #{nickname},
@@ -23,25 +22,19 @@
             #{birthDay} ,
             #{mobilePhone},
             #{gender},
-            #{email},
-            SYSDATE(),
-            SYSDATE()
+            #{email}
         )
     </insert>
     <insert id="insertUserLogin">
         INSERT INTO USER_LOGIN (
             USER_ID,
             USER_SEQ,
-            PASSWORD,
-            CREATE_DT,
-            UPDATE_DT
+            PASSWORD
         )
         VALUES (
             #{userId},
             #{userSeq},
-            #{password},
-            SYSDATE(),
-            SYSDATE()
+            #{password}
         )
     </insert>
 
@@ -84,22 +77,21 @@
             EMAIL,
             ADDRESS,
             AUTHORITY )
-        VALUES (
-            SELECT  A.USER_SEQ,
-                B.USER_ID,
-                B.PASSWORD,
-                A.NAME,
-                A.NICKNAME,
-                A.BIRTHDAY,
-                A.MOBILE_PHONE,
-                A.GENDER,
-                A.EMAIL,
-                A.ADDRESS,
-                A.AUTHORITY
-            FROM    USER A, USER_LOGIN B
-            WHERE   A.USER_SEQ = B.USER_SEQ
-            AND     A.USER_SEQ = #{userSeq}
-        )
+        SELECT
+            A.USER_SEQ,
+            B.USER_ID,
+            B.PASSWORD,
+            A.NAME,
+            A.NICKNAME,
+            A.BIRTHDAY,
+            A.MOBILE_PHONE,
+            A.GENDER,
+            A.EMAIL,
+            A.ADDRESS,
+            A.AUTHORITY
+        FROM    USER A, USER_LOGIN B
+        WHERE   A.USER_SEQ = B.USER_SEQ
+        AND     A.USER_SEQ = #{userSeq}
     </insert>
 
     <insert id="insertUserInfoHistory">
@@ -131,9 +123,10 @@
     </insert>
 
 
-    <update id="deleteUser" parameterType="int">
+    <update id="deleteUser">
         UPDATE  USER
-        SET     DELETE_YN = 'Y'
+        SET     DELETE_YN = 'Y',
+                NICKNAME = '탈퇴한 회원'
         WHERE   USER_SEQ = #{userSeq}
     </update>
 </mapper>

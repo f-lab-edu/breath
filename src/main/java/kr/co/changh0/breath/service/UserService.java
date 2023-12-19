@@ -1,5 +1,6 @@
 package kr.co.changh0.breath.service;
 
+import kr.co.changh0.breath.common.exception.DuplicateCheckException;
 import kr.co.changh0.breath.dto.UserDto;
 import kr.co.changh0.breath.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +28,19 @@ public class UserService {
         String email = user.getEmail();
 
         if(duplicateCheck("id", userId)) {
-            throw new RuntimeException("동일한 아이디가 존재합니다.");
+            throw new DuplicateCheckException("동일한 아이디가 존재합니다.");
         }
 
         if(duplicateCheck("nickname", nickname)) {
-            throw new RuntimeException("동일한 닉네임이 존재합니다.");
+            throw new DuplicateCheckException("동일한 닉네임이 존재합니다.");
         }
 
         if(duplicateCheck("mobilePhone", mobilePhone)) {
-            throw new RuntimeException("동일한 휴대전화번호가 존재합니다.");
+            throw new DuplicateCheckException("동일한 휴대전화번호가 존재합니다.");
         }
 
         if(duplicateCheck("email", email)) {
-            throw new RuntimeException("동일한 이메일이 존재합니다.");
+            throw new DuplicateCheckException("동일한 이메일이 존재합니다.");
         }
 
         userMapper.insertUser(user);
@@ -75,7 +76,7 @@ public class UserService {
         return null;
     }
 
-    public UserDto deleteUser(final int userSeq) {
+    public int deleteUser(final int userSeq) {
         userMapper.insertUserHistory(userSeq);
 
         return userMapper.deleteUser(userSeq);

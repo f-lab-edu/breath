@@ -18,11 +18,16 @@ public class PostService {
 
     }
 
-    public List<PostDto> selectPosts(String type) {
-        return postMapper.selectPosts(type);
-    }
-
     public List<PostDto> selectUserPosts(int seq) {
         return postMapper.selectUserPosts(seq);
+    }
+
+    public PostDto selectPost(int postId) {
+        return postMapper.selectPost(postId);
+    }
+
+
+    public List<PostDto> selectPosts(String postTypeId, String searchVal, String searchType, String typeId) {
+        return postMapper.selectPosts(postTypeId, searchVal, searchType, typeId);
     }
 }

@@ -37,22 +37,30 @@ public class PostDto {
 
     private String updateDt;
 
-    private boolType mainYn = boolType.N;
+    private boolType mainYn;
 
-    private boolType adultYn = boolType.N;
+    private boolType adultYn;
 
-    private boolType secretYn = boolType.N;
+    private boolType secretYn;
 
-    private boolType deleteYn = boolType.N;
+    private boolType deleteYn;
 
     private String qnaTypeId;
+
+    private String qnaType;
 
     private String categoryId;
 
     private String downCategoryId;
 
+    private String category;
+
     private String statusId;
 
+    private String status;
+
     private String postTypeId;
+
+    private String postType;
 
 }

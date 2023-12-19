@@ -65,10 +65,23 @@
         )
     </insert>
 
+    <select id="selectUserPosts" resultMap="posts">
+        SELECT  *
+        FROM    POST
+        WHERE   USER_SEQ = #{userSeq}
+            AND DELETE_YN = 'N'
+    </select>
+
+    <select id="selectPost" resultMap="posts">
+        SELECT  *
+        FROM    POST
+        WHERE   POST_SEQ = #{postId}
+    </select>
+
     <select id="selectPosts" resultMap="posts">
         SELECT  POST_SEQ,
             PARENT_POST_SEQ,
-            USER_SEQ,
+            M.USER_SEQ,
             TITLE,
             CONTENTS,
             TARGET_AMOUNT,
@@ -76,23 +89,45 @@
             DONATION_END_DT,
             REVIEWER_SEQ,
             REVIEW_DT,
-            QNA_TYPE_ID,
-            CATEGORY_ID,
-            DOWN_CATEGORY_ID,
-            STATUS_ID,
-            POST_TYPE_ID
-        FROM    POST
-        WHERE   POST_TYPE_ID = #{type}
-        <if test='type eq  "001".toString()'>
-            AND STATUS_ID = '002'
-        </if>
-            AND DELETE_YN = 'N'
-    </select>
-
-    <select id="selectUserPosts" resultMap="posts">
-        SELECT  *
-        FROM    POST
-        WHERE   USER_SEQ = #{userSeq}
-            AND DELETE_YN = 'N'
+            M.QNA_TYPE_ID,
+            C.QNA_TYPE,
+            M.CATEGORY_ID,
+            M.DOWN_CATEGORY_ID,
+            D.CATEGORY,
+            M.STATUS_ID,
+            A.STATUS,
+            M.POST_TYPE_ID,
+            B.POST_TYPE
+        FROM    POST M
+            LEFT JOIN STATUS A ON M.STATUS_ID = A.STATUS_ID
+            LEFT JOIN POST_TYPE B ON M.POST_TYPE_ID = B.POST_TYPE_ID
+            LEFT JOIN QNA_TYPE C ON M.QNA_TYPE_ID = C.QNA_TYPE_ID
+            LEFT JOIN CATEGORY D ON M.CATEGORY_ID = D.CATEGORY_ID AND M.DOWN_CATEGORY_ID = D.DOWN_CATEGORY_ID
+            LEFT JOIN USER G ON M.USER_SEQ = G.USER_SEQ
+        WHERE   M.POST_TYPE_ID = #{postTypeId}
+        <choose>
+            <when test='postTypeId eq "001".toString()'>
+                AND M.STATUS_ID = '002'
+                <if test="typeId neq null">
+                    AND M.CATEGORY_ID = SUBSTRING(#{typeId},1,2)
+                    AND M.DOWN_CATEGORY_ID = SUBSTRING(#{typeId},3,4)
+                </if>
+            </when>
+            <when test='postTypeId eq "002".toString()'>
+                AND M.QNA_TYPE_ID = #{typeId}
+            </when>
+        </choose>
+        <choose>
+            <when test='searchType eq "title".toString()'>
+                AND TITLE LIKE CONCAT('%', #{searchVal}, '%')
+            </when>
+            <when test='searchType eq "user".toString()'>
+                AND NICKNAME LIKE CONCAT('%', #{searchVal}, '%')
+            </when>
+            <when test='searchType eq "all".toString()'>
+                AND (TITLE LIKE CONCAT('%', #{searchVal}, '%') OR NICKNAME LIKE CONCAT('%', #{searchVal}, '%'))
+            </when>
+        </choose>
+            AND M.DELETE_YN = 'N'
     </select>
 </mapper>

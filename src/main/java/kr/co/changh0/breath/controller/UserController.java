@@ -60,16 +60,16 @@ public class UserController {
     }
     @DeleteMapping("/{seq}")
     public ResponseEntity deleteUser(@PathVariable final int seq) {
-        UserDto deleteUser = userservice.deleteUser(seq);
+        int deleteUser = userservice.deleteUser(seq);
 
-        if(deleteUser == null) {
+        if(deleteUser == 0) {
             throw new UserNotFoundException(String.format("ID[%s] not found", seq));
         }
 
         return ResponseEntity.noContent().build();
     }
 
-    //@PutMapping("/{userSeq}")
+    //@PatchMapping("/{userSeq}")
 
     //@GetMapping("/postList")
 }
