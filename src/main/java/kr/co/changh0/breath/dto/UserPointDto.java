@@ -27,9 +27,10 @@ public class UserPointDto {
     private String updateDt;
 
     @Builder
-    public UserPointDto(Integer userSeq, Integer receivePoint, Integer usePoint) {
+    public UserPointDto(Integer userSeq, Integer receivePoint, Integer usePoint, Integer currentPoint) {
         this.userSeq = userSeq;
         this.receivePoint = receivePoint;
         this.usePoint = usePoint;
+        this.currentPoint = currentPoint;
     }
 }

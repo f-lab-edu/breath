@@ -28,9 +28,8 @@ public class DonationController {
         UserDto userDto = userService.selectUser(postDto.getUserSeq());
 
         // 2. 내가 사용하고자 하는 포인트와 현재 가지고 있는 포인트 확인
-        UserPointDto getUserPointDto = donationService.selectUserPoint(userDto.getUserSeq());
+        UserPointDto getUserPointDto = donationService.selectUserPoint(6);
         Integer userPoint = userPointDto.getUsePoint();
-
         if(userPoint > getUserPointDto.getCurrentPoint()) {
             throw new RuntimeException("포인트가 부족합니다.");
         }

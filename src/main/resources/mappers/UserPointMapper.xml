@@ -31,23 +31,7 @@
             #{chargeAmount},
             #{receivePoint},
             #{usePoint},
-            (SELECT CURRENT_POINT
-            FROM (SELECT
-                <if test="usePoint neq null">
-                    CURRENT_POINT - ${usePoint}
-                </if>
-                <if test="receivePoint neq null">
-                    IF((SELECT COUNT(USER_POINT_SEQ)
-                        FROM USER_POINT
-                        WHERE USER_SEQ = #{userSeq}) > 0,
-                            CURRENT_POINT + ${receivePoint}, ${receivePoint})
-                </if>
-                AS CURRENT_POINT
-                FROM USER_POINT
-                WHERE USER_SEQ = #{userSeq}
-                ORDER BY USER_POINT_SEQ DESC LIMIT 1
-                FOR UPDATE)
-            AS TEMP)
+            #{currentPoint}
         )
     </insert>
 </mapper>
