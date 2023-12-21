@@ -20,7 +20,7 @@ public class UserService {
         return userDto;
     }
 
-    public UserDto save(UserDto user) {
+    public UserDto save(final UserDto user) {
         //같은 아이디, 이메일, 휴대전화, 닉네임 있는지 확인
         String userId = user.getUserId();
         String nickname = user.getNickname();
@@ -70,13 +70,11 @@ public class UserService {
 
         return false;
     }
-    public UserDto findOne(int id) {
-
-
-        return null;
+    public UserDto selectUser(final Integer userSeq) {
+        return userMapper.selectUser(userSeq);
     }
 
-    public int deleteUser(final int userSeq) {
+    public int deleteUser(final Integer userSeq) {
         userMapper.insertUserHistory(userSeq);
 
         return userMapper.deleteUser(userSeq);

@@ -59,13 +59,13 @@ public class PostController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{type}/{postId}")
-    public ResponseEntity<PostDto> selectPost(@PathVariable final String type, @PathVariable final int postId) {
+    @GetMapping("/{type}/{postSeq}")
+    public ResponseEntity<PostDto> selectPost(@PathVariable final String type, @PathVariable final Integer postSeq) {
         PostDto postDto = new PostDto();
         String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
 
         postDto.setPostTypeId(postTypeId);
-        postDto = postService.selectPost(postId);
+        postDto = postService.selectPost(postSeq);
 
         return ResponseEntity.ok(postDto);
 

@@ -4,21 +4,21 @@
 
 <mapper namespace="kr.co.changh0.breath.mapper.PostMapper">
     <resultMap id="posts" type="kr.co.changh0.breath.dto.PostDto">
-        <result property="postSeq" column="post_seq"/>
-        <result property="parentPostId" column="parent_post_seq"/>
-        <result property="userSeq" column="user_seq"/>
-        <result property="title" column="title"/>
-        <result property="contents" column="contents"/>
-        <result property="targetAmount" column="target_amount"/>
-        <result property="donationStartDt" column="donation_start_dt"/>
-        <result property="donationEndDt" column="donation_end_dt"/>
-        <result property="reviewerSeq" column="reviewer_seq"/>
-        <result property="reviewDt" column="review_dt"/>
-        <result property="qnaTypeId" column="qna_type_id"/>
-        <result property="categoryId" column="category_id"/>
-        <result property="downCategoryId" column="down_category_id"/>
-        <result property="statusId" column="status_id"/>
-        <result property="postTypeId" column="post_type_id"/>
+        <result property="postSeq"          column="post_seq"/>
+        <result property="parentPostId"     column="parent_post_seq"/>
+        <result property="userSeq"          column="user_seq"/>
+        <result property="title"            column="title"/>
+        <result property="contents"         column="contents"/>
+        <result property="targetAmount"     column="target_amount"/>
+        <result property="donationStartDt"  column="donation_start_dt"/>
+        <result property="donationEndDt"    column="donation_end_dt"/>
+        <result property="reviewerSeq"      column="reviewer_seq"/>
+        <result property="reviewDt"         column="review_dt"/>
+        <result property="qnaTypeId"        column="qna_type_id"/>
+        <result property="categoryId"       column="category_id"/>
+        <result property="downCategoryId"   column="down_category_id"/>
+        <result property="statusId"         column="status_id"/>
+        <result property="postTypeId"       column="post_type_id"/>
     </resultMap>
 
     <insert id="insertPost">
@@ -75,7 +75,7 @@
     <select id="selectPost" resultMap="posts">
         SELECT  *
         FROM    POST
-        WHERE   POST_SEQ = #{postId}
+        WHERE   POST_SEQ = #{postSeq}
     </select>
 
     <select id="selectPosts" resultMap="posts">

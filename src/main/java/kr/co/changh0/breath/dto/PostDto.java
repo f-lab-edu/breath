@@ -1,9 +1,8 @@
 package kr.co.changh0.breath.dto;
 
-import kr.co.changh0.breath.common.enums.boolType;
+import kr.co.changh0.breath.common.enums.BoolType;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 
 @Getter
@@ -37,13 +36,13 @@ public class PostDto {
 
     private String updateDt;
 
-    private boolType mainYn;
+    private BoolType mainYn;
 
-    private boolType adultYn;
+    private BoolType adultYn;
 
-    private boolType secretYn;
+    private BoolType secretYn;
 
-    private boolType deleteYn;
+    private BoolType deleteYn;
 
     private String qnaTypeId;
 

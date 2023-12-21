@@ -1,13 +1,11 @@
 package kr.co.changh0.breath.dto;
 
 import jakarta.validation.constraints.*;
-import kr.co.changh0.breath.common.enums.boolType;
-import kr.co.changh0.breath.common.enums.genderType;
+import kr.co.changh0.breath.common.enums.BoolType;
+import kr.co.changh0.breath.common.enums.GenderType;
 import lombok.Getter;
 import lombok.Setter;
 
-
-import java.time.LocalDateTime;
 @Getter
 @Setter
 public class UserDto {
@@ -35,7 +33,7 @@ public class UserDto {
 
     private String mobilePhone;
 
-    private genderType gender;
+    private GenderType gender;
 
     @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
@@ -50,6 +48,6 @@ public class UserDto {
 
     private String updateDt;
 
-    private boolType deleteYn;
+    private BoolType deleteYn;
 
 }

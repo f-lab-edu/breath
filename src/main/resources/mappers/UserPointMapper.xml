@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.changh0.breath.mapper.UserPointMapper">
+    <resultMap id="userPoint" type="kr.co.changh0.breath.dto.UserPointDto">
+        <result property="userPointSeq" column="user_point_seq"/>
+        <result property="userSeq"      column="user_seq"/>
+        <result property="chargeAmount" column="charge_amount"/>
+        <result property="receivePoint" column="receive_point"/>
+        <result property="usePoint"     column="use_point"/>
+        <result property="currentPoint" column="current_point"/>
+    </resultMap>
+
+    <select id="selectUserPoint" resultMap="userPoint">
+        SELECT  *
+        FROM    USER_POINT
+        WHERE   USER_SEQ = #{userSeq}
+        ORDER BY USER_POINT_SEQ DESC LIMIT 1
+    </select>
+
+    <insert id="insertDonationInfoToUserPoint">
+        INSERT INTO USER_POINT (
+            USER_SEQ,
+            CHARGE_AMOUNT,
+            RECEIVE_POINT,
+            USE_POINT,
+            CURRENT_POINT
+        ) VALUES (
+            #{userSeq},
+            #{chargeAmount},
+            #{receivePoint},
+            #{usePoint},
+            (SELECT CURRENT_POINT
+            FROM (SELECT
+                <if test="usePoint neq null">
+                    CURRENT_POINT - ${usePoint}
+                </if>
+                <if test="receivePoint neq null">
+                    IF((SELECT COUNT(USER_POINT_SEQ)
+                        FROM USER_POINT
+                        WHERE USER_SEQ = #{userSeq}) > 0,
+                            CURRENT_POINT + ${receivePoint}, ${receivePoint})
+                </if>
+                AS CURRENT_POINT
+                FROM USER_POINT
+                WHERE USER_SEQ = #{userSeq}
+                ORDER BY USER_POINT_SEQ DESC LIMIT 1
+                FOR UPDATE)
+            AS TEMP)
+        )
+    </insert>
+</mapper>

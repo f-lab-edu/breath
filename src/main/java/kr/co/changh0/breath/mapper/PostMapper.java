@@ -12,9 +12,9 @@ public interface PostMapper {
 
     void insertPost(PostDto postDto);
 
-    List<PostDto> selectUserPosts(int id);
+    List<PostDto> selectUserPosts(Integer userSeq);
 
-    PostDto selectPost(@Param("postId") int postId);
+    PostDto selectPost(@Param("postSeq") Integer postSeq);
 
     List<PostDto> selectPosts(@Param("postTypeId") String postTypeId,
                               @Param("searchVal") String searchVal,

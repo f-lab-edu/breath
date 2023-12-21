@@ -18,12 +18,12 @@ public class PostService {
 
     }
 
-    public List<PostDto> selectUserPosts(int seq) {
-        return postMapper.selectUserPosts(seq);
+    public List<PostDto> selectUserPosts(Integer userSeq) {
+        return postMapper.selectUserPosts(userSeq);
     }
 
-    public PostDto selectPost(int postId) {
-        return postMapper.selectPost(postId);
+    public PostDto selectPost(Integer postSeq) {
+        return postMapper.selectPost(postSeq);
     }
 
 

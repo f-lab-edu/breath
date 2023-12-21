@@ -18,9 +18,11 @@ public interface UserMapper {
 
     void insertUserLogin(UserDto userDto);
 
-    int deleteUser(int userSeq);
+    int deleteUser(Integer userSeq);
 
-    void insertUserHistory(int userSeq);
+    void insertUserHistory(Integer userSeq);
 
     UserDto duplicateCheck(@Param("type") String type, @Param("value") String value);
+
+    UserDto selectUser(Integer userSeq);
 }

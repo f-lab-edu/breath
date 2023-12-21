@@ -25,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping("/{seq}")
-    public UserDto retrieveUser(@PathVariable final int seq) {
-        UserDto userDto = userservice.findOne(seq);
+    public UserDto retrieveUser(@PathVariable final Integer seq) {
+        UserDto userDto = userservice.selectUser(seq);
 
         if(userDto == null) {
             throw new UserNotFoundException(String.format("ID[%s] not found", seq));
@@ -59,7 +59,7 @@ public class UserController {
 
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity deleteUser(@PathVariable final int seq) {
+    public ResponseEntity deleteUser(@PathVariable final Integer seq) {
         int deleteUser = userservice.deleteUser(seq);
 
         if(deleteUser == 0) {
