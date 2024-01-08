@@ -1,17 +1,23 @@
 package kr.co.changh0.breath.common.enums;
 
 public enum CategoryEnum {
-    ALL(null),
-    ART("0100"), PAINTING("0101"), CRAFT("0102"),
-    MEDIAART("0200");
+    ALL(null, null),
+    ART(1,0), PAINTING(1,1), CRAFT(1,2),
+    MEDIAART(2,0);
 
-    private final String categoryId;
+    private final Integer categoryId;
+    private final Integer downCategoryId;
 
-    CategoryEnum(String categoryId) {
+    CategoryEnum(Integer categoryId, Integer downCategoryId) {
         this.categoryId = categoryId;
+        this.downCategoryId = downCategoryId;
     }
 
-    public String getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
+    }
+
+    public Integer getDownCategoryId() {
+        return downCategoryId;
     }
 }

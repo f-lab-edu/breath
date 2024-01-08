@@ -1,18 +1,27 @@
 package kr.co.changh0.breath.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.changh0.breath.common.enums.BoolType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 public class PostDto {
     public PostDto() {}
 
     private Integer postSeq;
 
-    private Integer parentPostId;
+    private Integer parentPostSeq;
 
     private Integer userSeq;
 
@@ -24,17 +33,20 @@ public class PostDto {
 
     private Integer targetAmount;
 
-    private String donationStartDt;
+    private Date donationStartDt;
 
-    private String donationEndDt;
+    private Date donationEndDt;
 
     private Integer reviewerSeq;
 
-    private String reviewDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date reviewDt;
 
-    private String createDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date createDt;
 
-    private String updateDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date updateDt;
 
     private BoolType mainYn;
 
@@ -44,22 +56,25 @@ public class PostDto {
 
     private BoolType deleteYn;
 
-    private String qnaTypeId;
+    private Integer qnaTypeId;
 
     private String qnaType;
 
-    private String categoryId;
+    private Integer categoryId;
 
-    private String downCategoryId;
+    private Integer downCategoryId;
 
     private String category;
 
-    private String statusId;
+    private Integer statusId;
 
     private String status;
 
-    private String postTypeId;
+    private Integer postTypeId;
 
     private String postType;
 
+    private String searchVal;
+
+    private String searchType;
 }

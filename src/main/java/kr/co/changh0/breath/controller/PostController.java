@@ -1,14 +1,9 @@
 package kr.co.changh0.breath.controller;
 
 import jakarta.validation.Valid;
-import kr.co.changh0.breath.common.enums.CategoryEnum;
-import kr.co.changh0.breath.common.enums.PostEnum;
-import kr.co.changh0.breath.common.enums.QnaEnum;
 import kr.co.changh0.breath.dto.PostDto;
-import kr.co.changh0.breath.entity.Post;
 import kr.co.changh0.breath.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,7 +14,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
-
 public class PostController {
     // 삭제여부가 N 일 때
     // 1. 후원, 문의 등 게시글 종류에 따라 전체 게시글 목록 또는 검색(게시글 이름, 게시자)결과 목록(소통은 유저의 데이터가 필요함)
@@ -34,21 +28,14 @@ public class PostController {
 
     @GetMapping("/{type}")
     public List<PostDto> selectPosts(@PathVariable final String type) {
-        String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
-
-        return postService.selectPosts(postTypeId, null, null, null);
+        return postService.selectPosts(type, null, null, null);
     }
 
     @PostMapping("/{type}")
-    public ResponseEntity<Post> savePost(@Valid @RequestBody final PostDto postDto, @PathVariable final String type) {
+    public ResponseEntity<PostDto> savePost(@Valid @RequestBody final PostDto postDto, @PathVariable final String type) {
         // 추후 세션을 활용하여 로그인 된 회원만 포스팅 할 수 있도록 추가 예정
         // 후원글 게시 일 경우 요청 상태로 세팅
-        String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
-        if("001".equals(postTypeId) || "003".equals(postTypeId)) postDto.setStatusId("001");
-
-        postDto.setPostTypeId(postTypeId);
-
-        postService.save(postDto);
+        postService.save(postDto,type);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -60,36 +47,29 @@ public class PostController {
     }
 
     @GetMapping("/{type}/{postSeq}")
-    public ResponseEntity<PostDto> selectPost(@PathVariable final String type, @PathVariable final Integer postSeq) {
-        PostDto postDto = new PostDto();
-        String postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
-
-        postDto.setPostTypeId(postTypeId);
-        postDto = postService.selectPost(postSeq);
+    public ResponseEntity<PostDto> viewPost(@PathVariable final String type, @PathVariable final Integer postSeq) {
+        PostDto postDto = postService.viewPost(type, postSeq);
 
         return ResponseEntity.ok(postDto);
 
     }
 
     @GetMapping("/{type}/search")
-    @ResponseBody
-    public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("type") final String PostType,
+    public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("type") final String postType,
                                                      @RequestParam final String searchVal,
                                                      @RequestParam final String searchType,
-                                                     @RequestParam @DefaultValue("all") final String type) {
-        String postTypeId = PostEnum.valueOf(PostType.toUpperCase()).getPostTypeId();
-        String typeId = null;
-
-        if("001".equals(postTypeId)) typeId = CategoryEnum.valueOf(type.toUpperCase()).getCategoryId();
-        if("003".equals(postTypeId)) typeId = QnaEnum.valueOf(type.toUpperCase()).getQnaTypeId();
-
-        List<PostDto> posts = postService.selectPosts(postTypeId, searchVal, searchType, typeId);
-        System.out.println("end controller ::::");
+                                                     @RequestParam final String type) {
+        List<PostDto> posts = postService.selectPosts(postType, searchVal, searchType, type);
         return ResponseEntity.ok(posts);
     }
-    //@GetMapping("/{type}/{postId}/{parentPostId}") 필요 없을 수도?
 
-    //@DeleteMapping("/{postId}")
+    @GetMapping("/{type}/{postSeq}/{parentPostSeq}")
+    public ResponseEntity<PostDto> viewChildPost(@PathVariable("type") final String type,
+                                                 @PathVariable("postSeq") final Integer postSeq,
+                                                 @PathVariable("parentPostSeq") final Integer parentPostSeq) {
+        PostDto postDto = postService.viewPost(type, parentPostSeq);
 
-    //@PutMapping("/postID")
+        return ResponseEntity.ok(postDto);
+    }
+    
 }

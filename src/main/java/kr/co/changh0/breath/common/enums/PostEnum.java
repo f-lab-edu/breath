@@ -1,15 +1,15 @@
 package kr.co.changh0.breath.common.enums;
 
 public enum PostEnum {
-    SPONSOR("001"), COMMUNICATION("002"), QNA("003");
+    SPONSOR(1), COMMUNICATION(2), QNA(3);
 
-    private final String postTypeId;
+    private final Integer postTypeId;
 
-    PostEnum(String postTypeId) {
+    PostEnum(Integer postTypeId) {
         this.postTypeId = postTypeId;
     }
 
-    public String getPostTypeId() {
+    public Integer getPostTypeId() {
         return postTypeId;
     }
 

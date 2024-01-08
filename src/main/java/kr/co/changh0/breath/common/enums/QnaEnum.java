@@ -3,15 +3,15 @@ package kr.co.changh0.breath.common.enums;
 public enum QnaEnum {
 
     ALL(null),
-    ACCOUNT("001"), REFUND("002"), MASTER("003"), ETC("999");
+    ACCOUNT(1), REFUND(2), MASTER(3), ETC(99);
 
-    private final String QnaTypeId;
+    private final Integer QnaTypeId;
 
-    QnaEnum(String qnaTypeId) {
+    QnaEnum(Integer qnaTypeId) {
         QnaTypeId = qnaTypeId;
     }
 
-    public String getQnaTypeId() {
+    public Integer getQnaTypeId() {
         return QnaTypeId;
     }
 }
