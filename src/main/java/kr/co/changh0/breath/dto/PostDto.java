@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -62,8 +60,6 @@ public class PostDto {
 
     private Integer categoryId;
 
-    private Integer downCategoryId;
-
     private String category;
 
     private Integer statusId;
@@ -77,4 +73,8 @@ public class PostDto {
     private String searchVal;
 
     private String searchType;
+
+    private String type;
+
+    private Integer typeId;
 }

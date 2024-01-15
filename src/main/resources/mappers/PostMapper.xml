@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.changh0.breath.mapper.PostMapper">
     <resultMap id="posts" type="kr.co.changh0.breath.dto.PostDto">
         <result property="postSeq"          column="post_seq"/>
-        <result property="parentPostId"     column="parent_post_seq"/>
+        <result property="parentPostSeq"    column="parent_post_seq"/>
         <result property="userSeq"          column="user_seq"/>
         <result property="title"            column="title"/>
         <result property="contents"         column="contents"/>
@@ -14,11 +14,16 @@
         <result property="donationEndDt"    column="donation_end_dt"/>
         <result property="reviewerSeq"      column="reviewer_seq"/>
         <result property="reviewDt"         column="review_dt"/>
+        <result property="createDt"         column="create_dt"/>
+        <result property="updateDt"         column="update_dt"/>
         <result property="qnaTypeId"        column="qna_type_id"/>
+        <result property="qnaType"          column="qna_type"/>
         <result property="categoryId"       column="category_id"/>
-        <result property="downCategoryId"   column="down_category_id"/>
+        <result property="category"         column="category"/>
         <result property="statusId"         column="status_id"/>
+        <result property="status"           column="status"/>
         <result property="postTypeId"       column="post_type_id"/>
+        <result property="postType"         column="post_type"/>
     </resultMap>
 
     <insert id="insertPost">
@@ -39,11 +44,10 @@
             DELETE_YN,
             QNA_TYPE_ID,
             CATEGORY_ID,
-            DOWN_CATEGORY_ID,
             STATUS_ID,
             POST_TYPE_ID
         ) VALUES (
-            #{parentPostId},
+            #{parentPostSeq},
             #{userSeq},
             #{title},
             #{contents},
@@ -59,7 +63,6 @@
             #{deleteYn},
             #{qnaTypeId},
             #{categoryId},
-            #{downCategoryId},
             #{statusId},
             #{postTypeId}
         )
@@ -89,10 +92,11 @@
             DONATION_END_DT,
             REVIEWER_SEQ,
             REVIEW_DT,
+            M.CREATE_DT,
+            M.UPDATE_DT,
             M.QNA_TYPE_ID,
             C.QNA_TYPE,
             M.CATEGORY_ID,
-            M.DOWN_CATEGORY_ID,
             D.CATEGORY,
             M.STATUS_ID,
             A.STATUS,
@@ -102,19 +106,18 @@
             LEFT JOIN STATUS A ON M.STATUS_ID = A.STATUS_ID
             LEFT JOIN POST_TYPE B ON M.POST_TYPE_ID = B.POST_TYPE_ID
             LEFT JOIN QNA_TYPE C ON M.QNA_TYPE_ID = C.QNA_TYPE_ID
-            LEFT JOIN CATEGORY D ON M.CATEGORY_ID = D.CATEGORY_ID AND M.DOWN_CATEGORY_ID = D.DOWN_CATEGORY_ID
+            LEFT JOIN CATEGORY D ON M.CATEGORY_ID = D.CATEGORY_ID
             LEFT JOIN USER G ON M.USER_SEQ = G.USER_SEQ
-        WHERE   M.POST_TYPE_ID = #{postTypeId}
+        WHERE   B.POST_TYPE = #{postType}
         <choose>
-            <when test='postTypeId eq "001".toString()'>
-                AND M.STATUS_ID = '002'
-                <if test="typeId neq null">
-                    AND M.CATEGORY_ID = SUBSTRING(#{typeId},1,2)
-                    AND M.DOWN_CATEGORY_ID = SUBSTRING(#{typeId},3,4)
+            <when test='postType eq "support".toString()'>
+                AND M.STATUS_ID = 2
+                <if test="type neq null and type neq ''">
+                    AND D.CATEGORY = #{type}
                 </if>
             </when>
-            <when test='postTypeId eq "002".toString()'>
-                AND M.QNA_TYPE_ID = #{typeId}
+            <when test='postType eq "qna".toString()'>
+                AND C.QNA_TYPE = #{type}
             </when>
         </choose>
         <choose>

@@ -1,24 +1,33 @@
 package kr.co.changh0.breath.service;
 
-import kr.co.changh0.breath.common.enums.CategoryEnum;
-import kr.co.changh0.breath.common.enums.PostEnum;
-import kr.co.changh0.breath.common.enums.QnaEnum;
+import java.util.List;
+
+import kr.co.changh0.breath.common.enums.Status;
 import kr.co.changh0.breath.dto.PostDto;
+import kr.co.changh0.breath.dto.PostTypeDto;
 import kr.co.changh0.breath.mapper.PostMapper;
+import kr.co.changh0.breath.mapper.TypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
     private final PostMapper postMapper;
-    public void save(final PostDto postDto, final String type) {
+    private final TypeMapper typeMapper;
 
-        Integer postTypeId = PostEnum.valueOf(type.toUpperCase()).getPostTypeId();
-        if(postTypeId == 1 || postTypeId == 3) postDto.setStatusId(1);
+    @Transactional
+    public void save(final PostDto postDto, final String postType) {
+        Integer postTypeId = typeMapper.getPostTypeId(postType);
+        List<PostTypeDto> postTypeIdList = typeMapper.getPostTypeList(true);
+        for(PostTypeDto postTypeDto : postTypeIdList) {
+            if(postTypeId == postTypeDto.getPostTypeId()) {
+                postDto.setStatusId(Status.REQUEST.getStatusId());
+                break;
+            }
+        }
         postDto.setPostTypeId(postTypeId);
 
         postMapper.insertPost(postDto);
@@ -30,47 +39,21 @@ public class PostService {
     }
 
     public PostDto viewPost(String postType, Integer postSeq) {
-        Integer postTypeId = PostEnum.valueOf(postType.toUpperCase()).getPostTypeId();
         PostDto postDto = PostDto.builder()
-                .postTypeId(postTypeId)
+                .postType(postType)
                 .postSeq(postSeq)
                 .build();
 
         return postMapper.viewPost(postDto);
     }
 
-
     public List<PostDto> selectPosts(String postType, String searchVal, String searchType, String type) {
-        Integer postTypeId = PostEnum.valueOf(postType.toUpperCase()).getPostTypeId();
-        PostDto postDto = null;
-
-        if(postTypeId == 1) {
-            Integer categoryId = null;
-            Integer downCategoryId = null;
-            if(type != null) {
-                categoryId = CategoryEnum.valueOf(type.toUpperCase()).getCategoryId();
-                downCategoryId = CategoryEnum.valueOf(type.toUpperCase()).getDownCategoryId();
-            }
-            postDto = PostDto.builder()
-                    .postTypeId(postTypeId)
-                    .searchVal(searchVal)
-                    .searchType(searchType)
-                    .categoryId(categoryId)
-                    .downCategoryId(downCategoryId)
-                    .build();
-        }
-        if(postTypeId == 3) {
-            Integer qnaTypeId = null;
-            if(type != null) {
-                qnaTypeId = QnaEnum.valueOf(type.toUpperCase()).getQnaTypeId();
-            }
-            postDto = PostDto.builder()
-                    .postTypeId(postTypeId)
-                    .searchVal(searchVal)
-                    .searchType(searchType)
-                    .qnaTypeId(qnaTypeId)
-                    .build();
-        }
+        PostDto postDto = PostDto.builder()
+                .postType(postType)
+                .searchVal(searchVal)
+                .searchType(searchType)
+                .type(type)
+                .build();
 
         return postMapper.selectPosts(postDto);
     }
