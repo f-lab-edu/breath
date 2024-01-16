@@ -46,7 +46,7 @@ public class PostController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{type}/{postSeq}")
+    @GetMapping("/types/{type}/posts/{postSeq}")
     public ResponseEntity<PostDto> viewPost(@PathVariable final String type, @PathVariable final Integer postSeq) {
         PostDto postDto = postService.viewPost(type, postSeq);
 
@@ -63,7 +63,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @GetMapping("/{type}/{postSeq}/{parentPostSeq}")
+    @GetMapping("/types/{type}/posts/{postSeq}/inner-post/{parentPostSeq}")
     public ResponseEntity<PostDto> viewChildPost(@PathVariable("type") final String type,
                                                  @PathVariable("postSeq") final Integer postSeq,
                                                  @PathVariable("parentPostSeq") final Integer parentPostSeq) {
