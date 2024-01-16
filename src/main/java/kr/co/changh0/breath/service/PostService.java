@@ -20,7 +20,7 @@ public class PostService {
 
     @Transactional
     public void save(final PostDto postDto, final String postType) {
-        Integer postTypeId = typeMapper.getPostTypeId(postType);
+        Integer postTypeId = typeMapper.getPostTypeIdByType(postType);
         List<PostTypeDto> postTypeIdList = typeMapper.getPostTypeList(true);
         for(PostTypeDto postTypeDto : postTypeIdList) {
             if(postTypeId == postTypeDto.getPostTypeId()) {

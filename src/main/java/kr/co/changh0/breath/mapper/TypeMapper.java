@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface TypeMapper {
 
-    Integer getPostTypeId(String type);
+    Integer getPostTypeIdByType(String type);
 
     List<PostTypeDto> getPostTypeList(boolean adminCheck);
 

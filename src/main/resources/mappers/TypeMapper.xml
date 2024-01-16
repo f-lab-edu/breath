@@ -8,7 +8,7 @@
         <result property="postType"    column="post_type"/>
     </resultMap>
 
-    <select id="getPostTypeId" resultType="java.lang.Integer">
+    <select id="getPostTypeIdByType" resultType="java.lang.Integer">
         SELECT  POST_TYPE_ID
         FROM    POST_TYPE
         WHERE   POST_TYPE = #{type}
