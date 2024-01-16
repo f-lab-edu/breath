@@ -20,9 +20,9 @@ public class PostTypeDto {
     private String useYn;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date createDt;
+    private LocalDateTime createDt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date updateDt;
+    private LocalDateTime updateDt;
 
 }
