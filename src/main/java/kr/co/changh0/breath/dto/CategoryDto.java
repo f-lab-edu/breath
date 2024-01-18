@@ -1,24 +1,25 @@
 package kr.co.changh0.breath.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Getter
 @Setter
 public class CategoryDto {
     public CategoryDto() {}
 
-    private String categoryId;
-
-    private String downCategoryId;
+    private Integer categoryId;
 
     private String category;
 
     private String useYn;
 
-    private String createDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date createDt;
 
-    private String updateDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date updateDt;
 }

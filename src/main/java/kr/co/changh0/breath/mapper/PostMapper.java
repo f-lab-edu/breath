@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Repository
-public interface PostMapper {
+public interface PostMapper<T> {
 
     void insertPost(PostDto postDto);
 
@@ -16,8 +16,7 @@ public interface PostMapper {
 
     PostDto selectPost(@Param("postSeq") Integer postSeq);
 
-    List<PostDto> selectPosts(@Param("postTypeId") String postTypeId,
-                              @Param("searchVal") String searchVal,
-                              @Param("searchType") String searchType,
-                              @Param("typeId") String typeId);
+    PostDto viewPost(PostDto postDto);
+    List<PostDto> selectPosts(PostDto postDto);
+
 }
